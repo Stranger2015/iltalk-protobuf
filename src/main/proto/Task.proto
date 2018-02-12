@@ -1,0 +1,18 @@
+syntax="proto3";
+
+
+package org.ltc.iltalk;
+
+import "duplex";
+
+message Task {
+
+}
+
+message Request {//call //query
+
+}
+
+message Response {//return // answer
+
+}
