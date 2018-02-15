@@ -3,7 +3,7 @@ syntax="proto3";
 
 package org.ltc.iltalk;
 
-import "duplex";
+//import "duplex";
 
 message Task {
 

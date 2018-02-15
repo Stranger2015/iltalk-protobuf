@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.idea/workspace.xml
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/duplex/
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/elements/
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/types/
+langside/src/
