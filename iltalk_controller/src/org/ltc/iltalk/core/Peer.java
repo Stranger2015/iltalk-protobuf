@@ -2,6 +2,8 @@ package org.ltc.iltalk.core;
 
 import com.googlecode.protobuf.pro.duplex.PeerInfo;
 
+import java.io.IOException;
+
 abstract public class Peer implements IPeer {
 
 
@@ -15,7 +17,7 @@ abstract public class Peer implements IPeer {
      * @return
      */
     @Override
-    abstract public int activate(String hostname, int port);
+    abstract public int activate(String hostname, int port) throws IOException;
 
     @Override
     public PeerInfo getPeerInfo() {

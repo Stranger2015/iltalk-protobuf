@@ -1,16 +1,17 @@
 package org.ltc.iltalk.core;
 
+
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 import com.google.protobuf.RpcCallback;
-import com.googlecode.protobuf.pro.duplex.CleanShutdownHandler;
-import com.googlecode.protobuf.pro.duplex.PeerInfo;
-import com.googlecode.protobuf.pro.duplex.RpcClientChannel;
-import com.googlecode.protobuf.pro.duplex.RpcConnectionEventNotifier;
+import com.googlecode.protobuf.pro.duplex.*;
 import com.googlecode.protobuf.pro.duplex.execute.RpcServerCallExecutor;
+import com.googlecode.protobuf.pro.duplex.execute.RpcServerExecutorCallback;
 import com.googlecode.protobuf.pro.duplex.execute.ThreadPoolCallExecutor;
 import com.googlecode.protobuf.pro.duplex.listener.RpcConnectionEventListener;
 import com.googlecode.protobuf.pro.duplex.logging.CategoryPerServiceLogger;
+import com.googlecode.protobuf.pro.duplex.logging.RpcLogger;
 import com.googlecode.protobuf.pro.duplex.server.DuplexTcpServerPipelineFactory;
 import com.googlecode.protobuf.pro.duplex.util.RenamingThreadFactoryProxy;
 import com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol;
@@ -21,84 +22,96 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 
+import static com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol.OobMessage;
+import static com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol.OobMessage.getDefaultInstance;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ILTalkProtocolHandler {
+/**
+ * Copyright 2010-2013 Peter Klauser
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-    protected static Logger log = getLogger(ILTalkProtocolHandler.class);
 
+public class ILTalkServer extends Peer implements IPeer, RpcServerExecutorCallback {
 
-    private IPeer peer1;
-    private IPeer peer2;
+    protected static Logger log = getLogger(ILTalkServer.class);
 
-    private final Properties talkProps = new Properties();
+    RpcServer delegate;
 
-    public ILTalkProtocolHandler(String fn) throws IOException {
-
-        talkProps.load(new BufferedReader(new FileReader(fn)));
-
-        String hostNameKey1 = "host.name.1";
-        String hostNameKey2 = "host.name.2";
-
-        String portKey1 = "host.port.1";
-        String portKey2 = "host.port.2";
+    public ILTalkServer(RpcClient rcpClient, RpcServiceRegistry rpcServiceRegistry, RpcServerCallExecutor callExecutor, RpcLogger logger) {
+        delegate = new RpcServer(rcpClient, rpcServiceRegistry, callExecutor, logger);
     }
 
-    public void launchPeer1(talkProps.getPei
-
-public class ILTalkServerSideController {
-
-    protected static Logger log = LoggerFactory.getLogger(ILTalkServerSideController.class);
-    private final DuplexTcpServerPipelineFactory serverFactory;
-
-    protected ILTalkServerSideController(String serverHostname, int serverPort)
-            throws InvalidProtocolBufferException, InterruptedException {
-
-        PeerInfo serverInfo = new PeerInfo(serverHostname, serverPort);
+    /**
+     * @param hostname
+     * @param port
+     * @return
+     */
+    @Override
+    public int activate(String hostname, int port) throws InvalidProtocolBufferException {
+        PeerInfo serverInfo = new PeerInfo(hostname, port);
         // RPC payloads are uncompressed when logged - so reduce logging
         CategoryPerServiceLogger logger = new CategoryPerServiceLogger();
         logger.setLogRequestProto(false);
         logger.setLogResponseProto(false);
 
         // Configure the server.
-        serverFactory = new DuplexTcpServerPipelineFactory(serverInfo);
+        DuplexTcpServerPipelineFactory serverFactory = new DuplexTcpServerPipelineFactory(getPeerInfo());
+
         RpcServerCallExecutor rpcExecutor = new ThreadPoolCallExecutor(10, 10);
         serverFactory.setRpcServerCallExecutor(rpcExecutor);
         serverFactory.setLogger(logger);
 
-
-        RpcCallback<DuplexProtocol.OobMessage> clientStatusCallback = parameter -> log.info("Received " + parameter);
-
+        final RpcCallback<OobMessage> clientOobMessageCallback =
+                parameter -> log.info("Received " + parameter);
         // setup a RPC event listener - it just logs what happens
         RpcConnectionEventNotifier rpcEventNotifier = new RpcConnectionEventNotifier();
         RpcConnectionEventListener listener = new RpcConnectionEventListener() {
-
             @Override
             public void connectionReestablished(RpcClientChannel clientChannel) {
-                final RpcCallback<DuplexProtocol.OobMessage> clientStatusCallback =
-                        parameter -> log.info("Received " + parameter);
                 log.info("connectionReestablished " + clientChannel);
 
-                clientChannel.setOobMessageCallback(DuplexProtocol.OobMessage.getDefaultInstance(), clientStatusCallback);
+                clientChannel.setOobMessageCallback(getDefaultInstance(), clientOobMessageCallback);
+            }
+
+            @Override
+            public void connectionOpened(RpcClientChannel clientChannel) {
+                log.info("connectionOpened " + clientChannel);
+
+                clientChannel.setOobMessageCallback(getDefaultInstance(), clientOobMessageCallback);
+            }
+
+            @Override
+            public void connectionLost(RpcClientChannel clientChannel) {
+                log.info("connectionLost " + clientChannel);
+            }
+
+            @Override
+            public void connectionChanged(RpcClientChannel clientChannel) {
                 log.info("connectionChanged " + clientChannel);
-                clientChannel.setOobMessageCallback(DuplexProtocol.OobMessage.getDefaultInstance(), clientStatusCallback);
+                clientChannel.setOobMessageCallback(getDefaultInstance(), clientOobMessageCallback);
             }
         };
         rpcEventNotifier.setEventListener(listener);
         serverFactory.registerConnectionEventListener(rpcEventNotifier);
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
-        EventLoopGroup boss = new NioEventLoopGroup(2,
-                new RenamingThreadFactoryProxy("boss", Executors.defaultThreadFactory()));
+        EventLoopGroup boss = new NioEventLoopGroup(2, new RenamingThreadFactoryProxy("boss", Executors.defaultThreadFactory()));
         EventLoopGroup workers = new NioEventLoopGroup(16,
                 new RenamingThreadFactoryProxy("worker", Executors.defaultThreadFactory()));
         serverBootstrap.group(boss, workers);
@@ -121,12 +134,31 @@ public class ILTalkServerSideController {
         serverBootstrap.bind();
         //
         log.info("Serving " + serverBootstrap);
+
+        return mainLoop(serverFactory);
+    }
+
+    /**
+     * Called once after the RPC server call finishes ( or fails ).
+     * An RPC server call which is canceled will not be called back.
+     * <p>
+     * All NotifyOnCancel notification has been done by the
+     * RpcServerCallExecutor.
+     *
+     * @param correlationId
+     * @param message       Message of RPC response, or null if controller indicates error.
+     */
+    @Override
+    public void onFinish(int correlationId, Message message) {
+        delegate.onFinish(correlationId, message);
     }
 
     /**
      * +
+     *
+     * @param serverFactory
      */
-    public void serverLoop() throws InvalidProtocolBufferException {
+    public int mainLoop(DuplexTcpServerPipelineFactory serverFactory) throws InvalidProtocolBufferException {
 
         List<RpcClientChannel> clients = serverFactory.getRpcClientRegistry().getAllClients();
         for (RpcClientChannel client : clients) {
@@ -145,7 +177,6 @@ public class ILTalkServerSideController {
                 log.warn("org.ltc.iltalk.com.googlecode.protobuf.pro.duplex.wire.OobMessage send failed.", oobSend.cause());
             }
         }
+        return 0;
     }
 }
-
-//++++++++++++++++++++

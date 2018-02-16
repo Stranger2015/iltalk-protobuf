@@ -6,8 +6,10 @@ import com.googlecode.protobuf.pro.duplex.client.DuplexTcpClientPipelineFactory;
 import com.googlecode.protobuf.pro.duplex.client.RpcClientConnectionWatchdog;
 import com.googlecode.protobuf.pro.duplex.execute.ThreadPoolCallExecutor;
 import com.googlecode.protobuf.pro.duplex.listener.RpcConnectionEventListener;
+import com.googlecode.protobuf.pro.duplex.listener.TcpConnectionEventListener;
 import com.googlecode.protobuf.pro.duplex.logging.CategoryPerServiceLogger;
 import com.googlecode.protobuf.pro.duplex.logging.RpcLogger;
+import com.googlecode.protobuf.pro.duplex.server.DuplexTcpServerPipelineFactory;
 import com.googlecode.protobuf.pro.duplex.util.RenamingThreadFactoryProxy;
 import com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol;
 import io.netty.bootstrap.Bootstrap;
@@ -31,19 +33,34 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
     RpcChannel channel;
 
 
-    public ILTalkClient(Channel channel, PeerInfo client, PeerInfo server, RpcLogger logger, ExtensionRegistry registry) {
-
+    /**
+     * @param channel
+     * @param client
+     * @param server
+     * @param logger
+     * @param registry
+     */
+    public ILTalkClient(Channel channel,
+                        PeerInfo client,
+                        PeerInfo server,
+                        RpcLogger logger,
+                        ExtensionRegistry registry) {
         delegate = new RpcClient(channel, client, server, false, logger, registry);
     }
 
+    /**
+     * @param hostname
+     * @param port
+     * @return
+     * @throws IOException
+     */
     @Override
-    public int activate(String hostname, int port) {
+    public int activate(String hostname, int port) throws IOException {
 
         DuplexTcpClientPipelineFactory clientFactory = new DuplexTcpClientPipelineFactory();
 
         clientFactory.setConnectResponseTimeoutMillis(10000);
         clientFactory.setRpcServerCallExecutor(new ThreadPoolCallExecutor(3, 10));
-
 
         // RPC payloads are uncompressed when logged - so reduce logging
         CategoryPerServiceLogger logger = new CategoryPerServiceLogger();
@@ -88,6 +105,11 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
                 channel = clientChannel;
             }
         };
+
+        rpcEventNotifier.setEventListener(listener);
+        clientFactory.registerConnectionEventListener(rpcEventNotifier);
+
+
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup workers = new NioEventLoopGroup(16,
                 new RenamingThreadFactoryProxy("workers", Executors.defaultThreadFactory()));
@@ -107,58 +129,12 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
         CleanShutdownHandler shutdownHandler = new CleanShutdownHandler();
         shutdownHandler.addResource(workers);
 
-        rpcClient = clientFactory1.peerWith(client1, server, bootstrap);
-        simpleClient = clientFactory2.peerWith(client2, server, bootstrap);
-    }
-
-    public static void main(String[] argx) throws IOException {
-//        if (isDynamicSchemaMode) {
-//            DynamicSchema.Builder schemaBuilder = DynamicSchema.newBuilder();
-//            schemaBuilder.setName(schemaUrl);
-//            MessageDefinition msgDef = MessageDefinition.newBuilder("Task") // message
-//                    .addField("required", "int32", "id", 1)        // required int32 id = 1
-//                    .addField("required", "string", "name", 2)    // required string name = 2
-//                    .addField("optional", "string", "email", 3)    // optional string email = 3
-//                    .build();
-//
-//            schemaBuilder.addMessageDefinition(msgDef);
-//            DynamicSchema schema = null;
-//            try {
-//                schema = schemaBuilder.build();
-//            } catch (Descriptors.DescriptorValidationException e) {
-//                e.printStackTrace();
-//                throw new Error("Can't build", e);
-//            }
-//            // Create dynamic message from schema
-//            DynamicMessage.Builder msgBuilder = schema.newMessageBuilder("Person");
-//            Descriptors.Descriptor msgDesc = msgBuilder.getDescriptorForType();
-//
-//        }
-        DuplexProtocol.OobMessage taskMsg = DuplexProtocol.OobMessage.parseFrom(schemaUrl.getBytes());
-        rpcClient1.sendOobMessage(taskMsg);
-
-        /*
-        FileInputStream fin = new FileInputStream("iltalk.desc");
-        FileInputStream fin = new FileInputStream("iltalk.desc");
-        Descriptors.Descriptor desc=Descriptors.
-        Descriptors.FileDescriptor fd  =  Descriptors.FileDescriptor..buildFrom(fin).parseFrom(fin);
-        Descriptors.Descriptor md = set.getFile(0).getMessageType(0);
-        Descriptors.Descriptor
-        */
-        //       ILTalkProtocol.Start start.Start.parseFrom("lang1", "lang2", "");
-
+        setDelegate(clientFactory.peerWith(delegate.getServerInfo(), bootstrap));
         return 0;
     }
 
-    //delegate = new RpcClient(channel, client, server,false, logger, registry);
-
-
-        return 0;
-}
-
-    @Override
-    public PeerInfo getPeerInfo() {
-        return delegate.getPeerInfo();
+    private void setDelegate(RpcClient rpcClient) {
+        delegate = rpcClient;
     }
 
     /**
@@ -188,7 +164,7 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
      */
     @Override
     public boolean isClosed() {
-        return false;
+        return delegate.isClosed();
     }
 
     /**
@@ -199,7 +175,7 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
      */
     @Override
     public void setAttribute(String name, Object attributeValue) {
-
+        delegate.setAttribute(name, attributeValue);
     }
 
     /**
@@ -267,12 +243,7 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
      */
     @Override
     public void setOobMessageCallback(Message responsePrototype, RpcCallback<? extends Message> oobMessageListener) {
-
-    }
-
-    @Override
-    public void setPeerInfo(PeerInfo info) {
-
+        delegate.setOobMessageCallback(responsePrototype, oobMessageListener);
     }
 
     /**
@@ -286,8 +257,12 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
      * @param responsePrototype
      */
     @Override
-    public Message callBlockingMethod(Descriptors.MethodDescriptor method, RpcController controller, Message request, Message responsePrototype) throws ServiceException {
-        return null;
+    public Message callBlockingMethod(
+            Descriptors.MethodDescriptor method,
+            RpcController controller,
+            Message request,
+            Message responsePrototype) throws ServiceException {
+        return delegate.callBlockingMethod(method, controller, request, responsePrototype);
     }
 
     /**
@@ -308,6 +283,11 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
      */
     @Override
     public void callMethod(Descriptors.MethodDescriptor method, RpcController controller, Message request, Message responsePrototype, RpcCallback<Message> done) {
+        delegate.callMethod(method, controller, request, responsePrototype, done);
+    }
 
+    @Override
+    public PeerInfo getPeerInfo() {
+        return delegate.getPeerInfo();
     }
 }

@@ -2,6 +2,8 @@ package org.ltc.iltalk.core;
 
 import com.googlecode.protobuf.pro.duplex.PeerInfo;
 
+import java.io.IOException;
+
 import static java.lang.Class.forName;
 
 public interface IPeer {
@@ -38,7 +40,7 @@ public interface IPeer {
      * @param port
      * @return
      */
-    int activate(String hostname, int port);
+    int activate(String hostname, int port) throws IOException;
 
     /**
      * @return
