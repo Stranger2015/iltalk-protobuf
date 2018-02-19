@@ -23,6 +23,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -47,24 +48,24 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 
 
-public class ILTalkServer extends Peer implements IPeer, RpcServerExecutorCallback {
+public class ILTalkServer extends Peer implements RpcServerExecutorCallback {
 
-    protected static Logger log = getLogger(ILTalkServer.class);
+    protected Logger log = getLogger(getClass());
 
     RpcServer delegate;
 
-    public ILTalkServer(RpcClient rcpClient, RpcServiceRegistry rpcServiceRegistry, RpcServerCallExecutor callExecutor, RpcLogger logger) {
+    public ILTalkServer(RpcClient rcpClient, RpcServiceRegistry rpcServiceRegistry, RpcServerCallExecutor callExecutor, RpcLogger logger) throws IOException {
+        super("NUL.PROPERTIES");
         delegate = new RpcServer(rcpClient, rpcServiceRegistry, callExecutor, logger);
     }
 
-    /**
-     * @param hostname
-     * @param port
-     * @return
-     */
+    public boolean isWrapper() {
+        return false;
+    }
+
     @Override
-    public int activate(String hostname, int port) throws InvalidProtocolBufferException {
-        PeerInfo serverInfo = new PeerInfo(hostname, port);
+    public int activate(PeerInfo serverInfo, PeerInfo remoteClientInfo, boolean isHost1Sender) throws InvalidProtocolBufferException {
+        // PeerInfo serverInfo = new PeerInfo(hostname, port);
         // RPC payloads are uncompressed when logged - so reduce logging
         CategoryPerServiceLogger logger = new CategoryPerServiceLogger();
         logger.setLogRequestProto(false);
@@ -179,4 +180,14 @@ public class ILTalkServer extends Peer implements IPeer, RpcServerExecutorCallba
         }
         return 0;
     }
+
+
+    /**
+     * @return
+     */
+    @Override
+    public PeerInfo getPeerInfo() {
+        return null;
+    }
+
 }

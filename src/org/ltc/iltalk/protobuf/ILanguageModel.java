@@ -8,5 +8,5 @@ public interface ILanguageModel extends IRegisterable {
     /**
      *
      */
-  void load ();
+    void loadNewLang();
 }

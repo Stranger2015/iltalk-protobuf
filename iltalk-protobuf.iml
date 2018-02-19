@@ -17,5 +17,15 @@
     <orderEntry type="library" exported="" name="protoc" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.13" level="project" />
     <orderEntry type="library" exported="" name="protobuf-java-3.5.1" level="project" />
+    <orderEntry type="library" name="mongo-java-driver-3.4.3" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/redist/annotations-java8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

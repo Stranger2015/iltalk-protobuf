@@ -476,7 +476,7 @@ public class MethodCall implements ExecutableType {
      * <p> The annotation returned by this method could contain an element
      * whose value is of type {@code Class}.
      * This value cannot be returned directly:  information necessary to
-     * locate and load a class (such as the class loader to use) is
+     * locate and loadNew a class (such as the class loader to use) is
      * not available, and the class might not be loadable at all.
      * Attempting to read a {@code Class} object by invoking the relevant
      * method on the returned annotation
@@ -548,7 +548,7 @@ public class MethodCall implements ExecutableType {
      * <p> The annotations returned by this method could contain an element
      * whose value is of type {@code Class}.
      * This value cannot be returned directly:  information necessary to
-     * locate and load a class (such as the class loader to use) is
+     * locate and loadNew a class (such as the class loader to use) is
      * not available, and the class might not be loadable at all.
      * Attempting to read a {@code Class} object by invoking the relevant
      * method on the returned annotation

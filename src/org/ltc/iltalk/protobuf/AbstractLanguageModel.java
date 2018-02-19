@@ -2,12 +2,12 @@ package org.ltc.iltalk.protobuf;
 
 import javax.lang.model.element.Name;
 
-public class AbstractLanguageModel extends Subprocess implements ILanguageModel{
+public class AbstractLanguageModel extends Subprocess implements ILanguageModel {
 
     private Name name;
 
     @Override
-    public void load () {
+    public void loadNewLang() {
 
     }
 
@@ -29,9 +29,18 @@ public class AbstractLanguageModel extends Subprocess implements ILanguageModel{
         return name;
     }
 
+    /**
+     * @param name
+     * @return
+     */
+    @Override
+    public Name setName(Name name) {
+        return this.name = name;
+    }
+
 
     @Override
-    public Integer getId() {
-        return null;
+    public Integer etId() {
+        return id;
     }
 }

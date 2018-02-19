@@ -25,11 +25,16 @@ import java.util.concurrent.Executors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
+/**
+ *
+ */
+public class ILTalkClient extends Peer implements RpcClientChannel {
 
-    protected static Logger log = getLogger(ILTalkClient.class);
+    protected Logger log = getLogger(getClass());
 
     RpcClient delegate;
+
+
     RpcChannel channel;
 
 
@@ -44,18 +49,18 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
                         PeerInfo client,
                         PeerInfo server,
                         RpcLogger logger,
-                        ExtensionRegistry registry) {
+                        ExtensionRegistry registry) throws IOException {
+        super("nul.properties");
         delegate = new RpcClient(channel, client, server, false, logger, registry);
     }
 
-    /**
-     * @param hostname
-     * @param port
-     * @return
-     * @throws IOException
-     */
     @Override
-    public int activate(String hostname, int port) throws IOException {
+    public boolean isWrapper() {
+        return false;
+    }
+
+    @Override
+    public int activate(PeerInfo clientInfo, PeerInfo remoteServerInfo, boolean isFirstHostSender) throws IOException {
 
         DuplexTcpClientPipelineFactory clientFactory = new DuplexTcpClientPipelineFactory();
 
@@ -130,6 +135,7 @@ public class ILTalkClient extends Peer implements IPeer, RpcClientChannel {
         shutdownHandler.addResource(workers);
 
         setDelegate(clientFactory.peerWith(delegate.getServerInfo(), bootstrap));
+
         return 0;
     }
 

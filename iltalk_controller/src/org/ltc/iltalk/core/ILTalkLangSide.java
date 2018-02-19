@@ -1,28 +1,28 @@
 package org.ltc.iltalk.core;
 
 import org.ltc.iltalk.protobuf.ILanguageModel;
-import org.slf4j.Logger;
 
-import static org.slf4j.LoggerFactory.getLogger;
+import java.io.IOException;
 
-/**
+/**lHandler {
+
  *
  */
 public class ILTalkLangSide extends ILTalkProtocolHandler {
 
-    protected static Logger log = getLogger(ILTalkLangSide.class);
-
     private final ILanguageModel lang;
-
-    int nestingDepth;
-
+    private LanguagePair pair;
     /**
-     * @param lang
+     * @param  fn
      */
-    public ILTalkLangSide(ILanguageModel lang) {
-        super();
-        this.lang = lang;
+    public ILTalkLangSide(String fn) throws IOException, InterruptedException {
+        super(fn);
+
+        String langName = talkProps.getProperty("lang.name"); //fixme id
+        lang = Languages.valueOf(langName);
     }
 
-
+    public ILanguageModel getLang() {
+        return lang;
+    }
 }

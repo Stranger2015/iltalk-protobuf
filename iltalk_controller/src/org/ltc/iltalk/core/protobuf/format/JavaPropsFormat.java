@@ -378,7 +378,7 @@ public class JavaPropsFormat {
    *   escape sequences, which do not include all the escape sequences we
    *   need to support (e.g. '\x').
    * <li>{@code java.util.Scanner}:  This seems like a great way at least to
-   *   parse regular expressions out of a stream (so we wouldn't have to load
+   *   parse regular expressions out of a stream (so we wouldn't have to loadNew
    *   the entire input into a single string before parsing).  Sadly,
    *   {@code Scanner} requires that tokens be delimited with some delimiter.
    *   Thus, although the text "foo:" should parse to two tokens ("foo" and

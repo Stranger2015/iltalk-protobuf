@@ -1,6 +1,7 @@
 package org.ltc.iltalk.core;
 
 import com.googlecode.protobuf.pro.duplex.PeerInfo;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import java.io.IOException;
 
@@ -10,17 +11,27 @@ public interface IPeer {
 
     String LOCAL_HOST = "127.0.0.1";
 
+    /**
+     * @param args
+     */
     static void main(String[] args) {
         int rc;
-        if (args.length < 3) {
-            System.err.println("usage: <peer class> <peer hostname> <peer port>");
-            // System.exit(-1);
+        boolean isFirstHostSender = true;
+        if (args.length < 5) {
+            System.err.println(
+                    "usage: <peer class> <peer1 hostname> <peer1 port> " +
+                            "<peer2 hostname> <peer2 port> IsFirstHostSender(<\"1\", \"0\">, ");
             rc = -1;
-        }
+        } else
+            isFirstHostSender = args.length == 5 || args[5].equals("1");
         try {
             Class<IPeer> peerClass = (Class<IPeer>) forName(args[0]);
             IPeer peer = peerClass.newInstance();
-            rc = peer.activate(args[1], Integer.parseInt(args[2]));
+            rc = peer.activate(
+                    createPeerInfo(args[1], args[2]),
+                    createPeerInfo(args[3], args[4]),
+                    isFirstHostSender
+            );
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             rc = -2;
@@ -30,26 +41,51 @@ public interface IPeer {
         } catch (InstantiationException e) {
             e.printStackTrace();
             rc = -4;
+        } catch (IOException e) {
+            e.printStackTrace();
+            rc = -5;
         }
+        Runtime.getRuntime().exit(rc);
 
-        System.exit(rc);
     }
 
     /**
-     * @param hostname
+     * @param host
      * @param port
      * @return
      */
-    int activate(String hostname, int port) throws IOException;
+    static PeerInfo createPeerInfo(String host, String port) {
+        return createPeerInfo(host, port, null);
+    }
+
+    /**
+     * @param host
+     * @param port
+     * @param pid
+     * @return
+     */
+    static PeerInfo createPeerInfo(String host, String port, String pid) {
+
+        return new PeerInfo(host, Integer.parseInt(port), pid);
+    }
 
     /**
      * @return
      */
     PeerInfo getPeerInfo();
 
-    /**
-     * @param info
-     */
-    void setPeerInfo(PeerInfo info);
 
+    /**
+     * @param peerInfo1
+     * @param peerInfo2
+     * @param isFirstHostSender
+     * @return
+     */
+    int activate(PeerInfo peerInfo1, PeerInfo peerInfo2, boolean isFirstHostSender)
+            throws IOException;
+
+    default boolean isWrapper() {
+        return true;
+    }
 }
+
