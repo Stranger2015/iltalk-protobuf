@@ -1,13 +1,34 @@
 package org.ltc.iltalk.core;
 
 import com.googlecode.protobuf.pro.duplex.PeerInfo;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 abstract public class Peer implements IPeer {
+
+    protected static final Map<Class<?>, Logger> loggers = new HashMap<>();
+
+    protected final Logger log = getPeerLogger(getClass());//singletons
+
+    public static Logger getPeerLogger(Class<?> c) {
+        Logger log;
+        if (!loggers.containsKey(c)) {
+            log = getLogger(c);
+            loggers.put(c, log);
+        } else {
+            log = loggers.get(c);
+        }
+
+        return log;
+    }
 
     protected Properties talkProps = new Properties();
 
@@ -32,7 +53,7 @@ abstract public class Peer implements IPeer {
     protected IPeer peer1;
     protected IPeer peer2;
 
-    public Peer(String fn) throws IOException {
+    public Peer(String fn) throws IOException, InterruptedException {
         talkProps.load(new BufferedReader(new FileReader(fn)));
 
         String hostName1 = talkProps.getProperty("host.name.1", IPeer.LOCAL_HOST);

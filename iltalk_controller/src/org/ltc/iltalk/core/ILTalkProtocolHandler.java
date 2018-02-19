@@ -1,17 +1,11 @@
 package org.ltc.iltalk.core;
 
 import com.googlecode.protobuf.pro.duplex.PeerInfo;
-import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
-import static org.slf4j.LoggerFactory.getLogger;
+public class LTalkProtocolHandler extends Peer {
 
-public class ILTalkProtocolHandler extends Peer {
-    public final Logger log = getLogger(getClass());//singletins
 
 //    private final IPeer peer1;
 //    private final IPeer peer2;
