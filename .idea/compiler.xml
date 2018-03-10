@@ -15,5 +15,30 @@
       <entry name="!*.mpsr" />
       <entry name="!*.model" />
     </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="iltalk-protobuf" />
+        <module name="protoc-jar-maven-plugin" />
+        <module name="protoc-jar-maven-plugin-3.5.1.1" />
+        <module name="protoc_plugin" />
+      </profile>
+      <profile name="Annotation profile for ILTalk" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jpdb" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="iltalk" target="1.5" />
+      <module name="iltalk-protobuf" target="1.8" />
+      <module name="jpdb" target="1.8" />
+      <module name="protoc-jar-maven-plugin" target="1.5" />
+      <module name="protoc-jar-maven-plugin-3.5.1.1" target="1.5" />
+      <module name="protoc_plugin" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -16,26 +16,21 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 /**
  *
  */
-public class ILTalkClient extends Peer implements RpcClientChannel {
-
-    protected Logger log = getLogger(getClass());
+public class ILTalkClient implements RpcClientChannel {
 
     RpcClient delegate;
 
 
-    RpcChannel channel;
+    RpcChannel channel;//CURRENTCXIEWT
 
 
     /**
@@ -49,14 +44,9 @@ public class ILTalkClient extends Peer implements RpcClientChannel {
                         PeerInfo client,
                         PeerInfo server,
                         RpcLogger logger,
-                        ExtensionRegistry registry) throws IOException {
-        super("nul.properties");
+                        ExtensionRegistry registry) {
+        //super("nul.properties");
         delegate = new RpcClient(channel, client, server, false, logger, registry);
-    }
-
-    @Override
-    public boolean isWrapper() {
-        return false;
     }
 
     @Override
@@ -77,9 +67,7 @@ public class ILTalkClient extends Peer implements RpcClientChannel {
         // Set up the event pipeline factory.
         // setup a RPC event listener - it just logs what happens
         RpcConnectionEventNotifier rpcEventNotifier = new RpcConnectionEventNotifier();
-
         final RpcConnectionEventListener listener = new RpcConnectionEventListener() {
-
             private RpcCallback<? extends Message> serverCallback
                     = (RpcCallback<Message>) parameter -> {
                 log.info("dummy server callback " + parameter);
@@ -295,5 +283,15 @@ public class ILTalkClient extends Peer implements RpcClientChannel {
     @Override
     public PeerInfo getPeerInfo() {
         return delegate.getPeerInfo();
+    }
+
+    @Override
+    public IPeerWrapper getPeer1() {
+        return (IPeerWrapper) delegate;
+    }
+
+    @Override
+    public IPeerWrapper getPeer2() {
+        return null;
     }
 }

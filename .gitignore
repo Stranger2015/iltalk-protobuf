@@ -1,7 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 .gitignore
 .idea/workspace.xml
-iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/duplex/
-iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/elements/
-iltalk_controller/src/org/ltc/iltalk/core/protobuf/pro/types/
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/jpdb/pro/duplex/
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/jpdb/pro/elements/
+iltalk_controller/src/org/ltc/iltalk/core/protobuf/jpdb/pro/types/
 langside/src/
+-

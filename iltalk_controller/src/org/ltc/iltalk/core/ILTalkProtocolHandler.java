@@ -4,15 +4,20 @@ import com.googlecode.protobuf.pro.duplex.PeerInfo;
 
 import java.io.IOException;
 
-public class LTalkProtocolHandler extends Peer {
+public class ILTalkProtocolHandler extends PeerWrapper {
 
 
-//    private final IPeer peer1;
-//    private final IPeer peer2;
+//    private final IPeerWrapper peer1;
+//    private final IPeerWrapper peer2;
 
 //    protected final Properties talkProps = new Properties();
 
-    public ILTalkProtocolHandler(String fn) throws IOException, InterruptedException {
+    /**
+     * @param fn
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public ILTalkProtocolHandler(String fn) {
         super(fn);
 
     }
@@ -32,10 +37,21 @@ public class LTalkProtocolHandler extends Peer {
      * @return
      */
     @Override
-    public int activate(PeerInfo peerInfo1, PeerInfo peerInfo2, boolean isFirstHostSender) throws IOException {
-        return 0;
+    public int activate(PeerInfo peerInfo1, PeerInfo peerInfo2, boolean isFirstHostSender)
+
+
+
     }
-}
+
+    @Override
+    public IPeerWrapper getPeer1() {
+        return null;
+    }
+
+    @Override
+    public IPeerWrapper getPeer2() {
+        return null;
+    }
 }
 
 

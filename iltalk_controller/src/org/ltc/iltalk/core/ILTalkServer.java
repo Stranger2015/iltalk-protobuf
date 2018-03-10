@@ -23,7 +23,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -48,19 +47,18 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 
 
-public class ILTalkServer extends Peer implements RpcServerExecutorCallback {
+public class ILTalkServer implements RpcServerExecutorCallback {
 
     protected Logger log = getLogger(getClass());
 
     RpcServer delegate;
 
-    public ILTalkServer(RpcClient rcpClient, RpcServiceRegistry rpcServiceRegistry, RpcServerCallExecutor callExecutor, RpcLogger logger) throws IOException {
-        super("NUL.PROPERTIES");
+    public ILTalkServer(RpcClient rcpClient,
+                        RpcServiceRegistry rpcServiceRegistry,
+                        RpcServerCallExecutor callExecutor,
+                        RpcLogger logger) {
+        //      super("NUL.PROPERTIES");
         delegate = new RpcServer(rcpClient, rpcServiceRegistry, callExecutor, logger);
-    }
-
-    public boolean isWrapper() {
-        return false;
     }
 
     @Override
@@ -70,7 +68,6 @@ public class ILTalkServer extends Peer implements RpcServerExecutorCallback {
         CategoryPerServiceLogger logger = new CategoryPerServiceLogger();
         logger.setLogRequestProto(false);
         logger.setLogResponseProto(false);
-
         // Configure the server.
         DuplexTcpServerPipelineFactory serverFactory = new DuplexTcpServerPipelineFactory(getPeerInfo());
 
@@ -163,7 +160,7 @@ public class ILTalkServer extends Peer implements RpcServerExecutorCallback {
 
         List<RpcClientChannel> clients = serverFactory.getRpcClientRegistry().getAllClients();
         for (RpcClientChannel client : clients) {
-            ByteString msgS = ByteString.copyFromUtf8(String.format("Server %s OK@%ld",
+            ByteString msgS = ByteString.copyFromUtf8(String.format("Server %s OK@%d",
                     serverFactory.getServerInfo().toString(),
                     System.currentTimeMillis()));
 
@@ -185,7 +182,7 @@ public class ILTalkServer extends Peer implements RpcServerExecutorCallback {
     /**
      * @return
      */
-    @Override
+//    @Override
     public PeerInfo getPeerInfo() {
         return null;
     }
