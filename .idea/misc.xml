@@ -3,9 +3,6 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/protoc_plugin/pom.xml" />
-        <option value="$PROJECT_DIR$/jpdb/pom.xml" />
-        <option value="$PROJECT_DIR$/protoc-jar-maven-plugin-3.5.1.1/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>

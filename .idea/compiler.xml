@@ -21,15 +21,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="iltalk-protobuf" />
-        <module name="protoc-jar-maven-plugin" />
         <module name="protoc-jar-maven-plugin-3.5.1.1" />
-        <module name="protoc_plugin" />
-      </profile>
-      <profile name="Annotation profile for ILTalk" enabled="true">
-        <sourceOutputDir name="../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="jpdb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
