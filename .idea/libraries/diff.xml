@@ -2,8 +2,6 @@
   <library name="diff">
     <CLASSES />
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/../ILT/libs/diff/src/main/java" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
