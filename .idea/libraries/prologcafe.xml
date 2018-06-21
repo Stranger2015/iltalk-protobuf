@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="prologcafe">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/third-party/prologcafe/builtin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third-party/prologcafe/compiler.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third-party/prologcafe/lang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third-party/prologcafe/plcafe.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/third-party/prologcafe/PrologCafe1.2.5.src.zip!/" />
+    </SOURCES>
+  </library>
+</component>

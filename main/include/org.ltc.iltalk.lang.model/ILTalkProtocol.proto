@@ -1,0 +1,329 @@
+/*tobuf/any.proto";
+
+import "org/ltc/iltalk.cc/cc/protobuf/database/storage.proto";
+
+service Db
+* ProfaneDB - A Protocol Buffers database.
+* Copyright (C) 2017  "Giorgio Azzinnaro" <giorgio.azzinnaro@gmail.com>
+*
+* it under the terms of the GNU General Public License as published by
+* This program is free software: you can redistribute it and/or modify
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* This program is distributed in the hope that it will be useful,
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+syntax = "proto2";
+
+package ltc.iltalk.lang.model;
+
+option java_package = "org.ltc.iltalk.lang.model";
+option java_multiple_files = true;
+option java_outer_classname = "ILTalkProtocolProto";
+//option go_package = "gitlab.com/profanedb/protobuf/db";
+//option csharp_namespace= "ProfaneDB.Protobuf";
+//option java_package = "com.profanedb.protobuf"//;
+//option objc_class_prefix = "PDB";
+
+message ILTalkProtocol {
+    required LanguageSide side1 = 1;
+    required LanguageSide side2 = 2;
+    repeated Request request = 3;
+    repeated Response response = 4;
+}
+
+message LanguagePair {
+    required LanguageModel lang1 = 1;
+    required LanguageModel lang2 = 2;
+}
+
+enum Languages {
+    JAVA = 0;
+    LOGALK = 1;
+    PROLOG = 2;
+}
+
+enum SourceVersion {
+
+}
+
+//real machine software only ONE PER procesS
+//message VirtualLangMachine {
+//    required string name = 1;
+//    required uint32 pid = 2;
+//}
+
+//imageable machine attached to EACH thread is a interpreter (AST?)
+message LanguageAbstractMachine {
+    required LtName name = 1;
+    required Thread thread = 2;
+}
+
+message LtName {
+    required bytes name = 1;
+}
+
+message Thread {
+    required LtName name = 1;
+    required uint32 priority = 2;
+    required ThreadState state = 3;
+}
+
+enum ThreadState {
+
+}
+
+message LanguageModel {
+    required string name = 1;
+    required Languages language = 2;
+    required SourceVersion release = 3;
+
+
+    oneof Element {
+    }
+}
+
+enum PrimitiveTypeKind {
+
+
+}
+
+enum TypeKind {
+
+    /**
+     * The primitive type {@code boolean}.
+     */
+    BOOLEAN = 1;
+
+    /**
+     * The primitive type {@code byte}.
+     */
+    BYTE = 2;
+
+    /**
+     * The primitive type {@code short}.
+     */
+    SHORT = 3;
+
+    /**
+     * The primitive type {@code int}.
+     */
+    INT = 4;
+
+    /**
+     * The primitive type {@code long}.
+     */
+    LONG = 5;
+
+    /**
+     * The primitive type {@code char}.
+     */
+    CHAR = 6;
+
+    /**
+     * The primitive type {@code float}.
+     */
+    FLOAT = 7;
+
+    /**
+     * The primitive type {@code double}.
+     */
+    DOUBLE = 8;
+
+    /**
+     * The pseudo-type corresponding to the keyword {@code void}.
+     * @see NoType
+     */
+    VOID = 9;
+
+    /**
+     * A pseudo-type used where no actual type is appropriate.
+     * @see NoType
+     */
+    NONE = 10;
+
+    /**
+     * The null type.
+     */
+    NULL = 11;
+
+    /**
+     * An array type.
+     */
+    ARRAY = 12;
+
+    /**
+     * A class or interface type.
+     */
+    DECLARED = 13;
+
+    /**
+     * A class or interface type that could not be resolved.
+     */
+    ERROR = 14;
+
+    /**
+     * A type variable.
+     */
+    TYPEVAR = 15;
+
+    /**
+     * A wildcard type argument.
+     */
+    WILDCARD = 16;
+
+    /**
+     * A pseudo-type corresponding to a package element.
+     * @see NoType
+     */
+    PACKAGE = 17;
+
+    /**
+     * A method= 12434567879; constructor= 12434567879; or initializer.
+     */
+    EXECUTABLE = 18;
+
+    /**
+     * An implementation-reserved type.
+     * This is not the type you are looking for.
+     */
+    OTHER = 19;
+
+    /**
+     * A union type.
+     *
+     * @since 1.7
+     */
+    UNION = 20;
+
+    /**
+     * An intersection type.
+     *
+     * @since 1.8
+     */
+    INTERSECTION = 21;
+}
+
+message Type {
+    required TypeKind typeKind = 1;
+    oneof Type0 {
+        PrimitiveType primitiveType = 4;
+        ReferenceType referenceType = 5;
+    }
+    required bool isPrimitive = 3;
+}
+
+message PrimitiveType {
+//    BOOLEAN bool = 1;
+//    BYTE     byte =2;
+//    oneof Primitives {
+//
+//    }
+}
+
+message ReferenceType {
+
+}
+
+//enum ParseKind {
+//    TOP_DOWN = 1;
+//    BOTTOM_UP = 2;
+//}
+//
+//enum GrammarLanguages {
+//
+//}
+//
+//enum GrammarRelease {
+//
+//}
+//
+//message GrammarType {
+//    required TypeModelKind kind = 1;
+//    required GrammarLanguages Languages = 2;
+//    required GrammarRelease release = 3;
+//}
+//
+//message Grammar {
+//    required LanguageModel lang = 1;
+//    required GrammarRule start = 2;
+//
+//    optional GrammarModule extendsSyntax = 3;
+//    optional GrammarRule extendsRule = 4;
+//    repeated GrammarRule rules = 5;
+
+//}
+//
+//message GrammarModule {
+//
+//}
+//
+//message Lexer {
+//
+//}
+//
+//message GrammarRule {
+//    required RuleOwner owner = 1;
+//    required Name head = 2;
+//    repeated Name body = 3;
+//}
+//
+//enum RuleOwner {
+//    LEXER = 1;
+//    PARSER = 2;
+//}
+//
+//message Operator {
+//    required Name name = 1;
+//}
+
+message NameUTF8 {
+    required bytes name = 1;
+}
+
+message Name {
+    required string name = 1;
+}
+
+
+message LanguageSide {
+    required LanguagePair pair = 3;
+    required Request request = 1;
+    required Response response = 2;
+}
+
+service DbService {
+    rpc Send (Request) returns (Response);
+    rpc Receive (Request) returns (Response);
+}
+
+message Request {
+    required int32 correlationId = 1;
+    required string serviceIdentifier = 2;
+    required string methodIdentifier = 3;
+    required bytes requestBytes = 4;
+    optional int32 timeoutMs = 5;
+}
+
+message Response {
+    required bytes responseBytes = 4;
+    optional int32 timeoutMs = 5;
+}
+
+
+
+
+
+
+
+
+
+
+

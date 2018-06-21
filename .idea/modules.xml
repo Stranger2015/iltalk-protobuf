@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/iltalk-protobuf.iml" filepath="$PROJECT_DIR$/iltalk-protobuf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/protoc_plugin/custom_protoc_plugin.iml" filepath="$PROJECT_DIR$/protoc_plugin/custom_protoc_plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/iltalk-protobuf.iml" filepath="$PROJECT_DIR$/.idea/iltalk-protobuf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iltalk-protobuf_api/iltalk-protobuf_api.iml" filepath="$PROJECT_DIR$/iltalk-protobuf_api/iltalk-protobuf_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iltalk-protobuf_main.iml" filepath="$PROJECT_DIR$/.idea/modules/iltalk-protobuf_main.iml" group="iltalk-protobuf" />
+      <module fileurl="file://$PROJECT_DIR$/iltalk-protobuf_test/iltalk-protobuf_test.iml" filepath="$PROJECT_DIR$/iltalk-protobuf_test/iltalk-protobuf_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iltalk-protobuf_test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/iltalk-protobuf_test~1.iml" group="iltalk-protobuf" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/iltalk-protobuf~1.iml" filepath="$PROJECT_DIR$/.idea/modules/iltalk-protobuf~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/main/main.iml" filepath="$PROJECT_DIR$/main/main.iml" />
     </modules>
   </component>
 </project>

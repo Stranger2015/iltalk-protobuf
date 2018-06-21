@@ -20,17 +20,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="iltalk-protobuf" />
-        <module name="protoc-jar-maven-plugin-3.5.1.1" />
+        <module name="custom_protoc_plugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="iltalk" target="1.5" />
-      <module name="iltalk-protobuf" target="1.8" />
-      <module name="jpdb" target="1.8" />
-      <module name="protoc-jar-maven-plugin" target="1.5" />
-      <module name="protoc-jar-maven-plugin-3.5.1.1" target="1.5" />
-      <module name="protoc_plugin" target="1.5" />
+      <module name="custom_protoc_plugin" target="8" />
+      <module name="iltalk-protobuf_main" target="1.8" />
+      <module name="iltalk-protobuf_test" target="1.8" />
+      <module name="iltalk-protobuf_test~1" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

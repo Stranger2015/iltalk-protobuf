@@ -4,13 +4,13 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/iltalk_controller/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/iltalk_ccontroller/src" iaTestSources="false"/>
+    <orderEntry type="inheritedJdk"  isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/proto" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/iltalk_controller/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="diff" level="project" />
     <orderEntry type="module-library" exported="">
