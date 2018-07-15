@@ -1,4 +1,5 @@
 # iltalk-protobuf
-iltalk-protobuf (InterLingual-Talk) plugin performs interlingual bidirectional procedure calls with unlimited nesting depth and for arbitrary pair of languages which are supporting the Google Protobuf library and its extensions.
+The iltalk-protobuf (InterLingual-Talk) plugin performs the interlingual bidirectional procedural calls which are unlimited in depth (reentrant) and also are unlimited in the choice of a language pair. 
+The language pair must support the **Google Protobuf** library and its extensions. the default pair is `Java/Logtalk.`
 
-The repository is still under development, thus the project is unbildable
+The repository is still under development, thus the project is unbildable.
