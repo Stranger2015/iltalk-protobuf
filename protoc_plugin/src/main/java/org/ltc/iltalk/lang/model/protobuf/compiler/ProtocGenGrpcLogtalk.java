@@ -79,7 +79,7 @@ public class ProtocGenGrpcLogtalk {
                 stdin.mark(bytesAvail);
             }
             byte[] data = new byte[ bytesAvail ];
-            int rc = System.in.read(data);
+            int rc = stdin.read(data);
             switch(rc){
                 case 0:
                 case -1:
@@ -91,7 +91,7 @@ public class ProtocGenGrpcLogtalk {
                 stdin.reset();
             }
         } catch( Exception exception ) {
-            exception.printStackTrace(System.);
+            exception.printStackTrace(System.err);
         }
         currentFile = PluginProtos.getDescriptor();
         Descriptors.FileDescriptor.Syntax syntax = currentFile.getSyntax();

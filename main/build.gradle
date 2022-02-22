@@ -22,7 +22,7 @@ buildscript {
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.5.1'
+    compile 'com.google.protobuf:protobuf-java:3.19.4'
     compile 'io.grpc:grpc-stub:1.0.0-pre2'
     compile 'io.grpc:grpc-protobuf:1.0.0-pre2'
     if (JavaVersion.current().isJava8Compatible()) {
@@ -33,7 +33,7 @@ dependencies {
     // Extra proto source files besides the ones residing under
     // "src/main".
 
-    protobuf files("lib/protos.tar.gz")
+//    protobuf files("lib/protos.tar.gz")
     protobuf files("lib/protos.tar.gz")
     protobuf fileTree("ext/")
 
@@ -46,7 +46,7 @@ dependencies {
 protobuf {
     protoc {
         // The artifact spec for the Protobuf Compiler
-        artifact = 'com.google.protobuf:protoc:3.5.1'
+        artifact = 'com.google.protobuf:protoc:3.19.4'
     }
     plugins {
         // Optional: an artifact spec for a protoc plugin, with "grpc" as

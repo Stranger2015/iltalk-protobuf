@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="interprolog">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../interprolog/interprolog.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

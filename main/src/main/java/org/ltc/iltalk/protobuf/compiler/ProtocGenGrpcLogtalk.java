@@ -1,12 +1,18 @@
 package org.ltc.iltalk.protobuf.compiler;
 
 import com.google.protobuf.Descriptors;
+import com.google.protobuf.Descriptors.FileDescriptor;
+import com.google.protobuf.Descriptors.FileDescriptor.Syntax;
 import com.google.protobuf.compiler.PluginProtos;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse;
 
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+
+import static com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest.*;
 
 /**
  * protoc --proto_path=IMPORT_PATH --cpp_out=DST_DIR --java_out=DST_DIR --python_out=DST_DIR path/to/file.proto
@@ -34,30 +40,37 @@ public class ProtocGenGrpcLogtalk {
     private static final String defaultTaskID = "protoc-gen-logtalk";
     private static String taskID;
     private static String defaultID;
-    private static Descriptors.FileDescriptor currentFile;
+    private static FileDescriptor currentFile;
 
-    private static PluginProtos.CodeGeneratorRequest request;
-    private static PluginProtos.CodeGeneratorResponse response;
+    private static CodeGeneratorRequest request;
+    private static CodeGeneratorResponse response;
 
     /**
      * if __name__ == '__main__':
      * # Read request message from stdin
-     * data = sys.stdin.read()
-     * <p>
+     *--------------------------------
+     *
+     *  data = sys.stdin.read()
      * # Parse request
+     *-------------------------------
      * request = plugin.CodeGeneratorRequest()
      * request.ParseFromString(data)
-     * <p>
+     *
      * # Create response
+     * ------------------------------
      * response = plugin.CodeGeneratorResponse()
-     * <p>
+     *
+     *------------------------------
      * # Generate code
      * generate_code(request, response)
      * <p>
      * # Serialise response message
+     *-----------------------------
+     *
      * output = response.SerializeToString()
-     * <p>
+     *
      * # Write to stdout
+     * -----------------------------
      * sys.stdout.write(output)
      *
      * @param argv
@@ -68,8 +81,8 @@ public class ProtocGenGrpcLogtalk {
         if (defaultTaskID.equals(defaultID)) {
             console.printf("\nas a default plugin %s\n", defaultID);
         }
-        request = PluginProtos.CodeGeneratorRequest.getDefaultInstance();
-        response = PluginProtos.CodeGeneratorResponse.getDefaultInstance();
+        request = getDefaultInstance();
+        response = CodeGeneratorResponse.getDefaultInstance();
         try {
             InputStream stdin = System.in;
             PrintStream stdout = System.out;
@@ -78,7 +91,7 @@ public class ProtocGenGrpcLogtalk {
                 stdin.mark(bytesAvail);
             }
             byte[] data = new byte[bytesAvail];
-            int rc = System.in.read(data);
+            int rc = stdin.read(data);
             switch(rc){
                 case 0:
                 case -1:
@@ -90,11 +103,22 @@ public class ProtocGenGrpcLogtalk {
                 stdin.reset();
             }
         } catch( Exception exception ) {
-            exception.getStacktrace();
+            exception.getStackTrace();
         }
+        response.
         currentFile = PluginProtos.getDescriptor();
-        Descriptors.FileDescriptor.Syntax syntax = currentFile.getSyntax();
+        Syntax syntax = currentFile.getSyntax();
         currentFile.getOptions();
 
+    }
+
+    public static
+    CodeGeneratorRequest getRequest () {
+        return request;
+    }
+
+    public static
+    void setRequest ( CodeGeneratorRequest request ) {
+        ProtocGenGrpcLogtalk.request = request;
     }
 }

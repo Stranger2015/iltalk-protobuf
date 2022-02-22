@@ -1,6 +1,7 @@
     package org.ltc.iltalk.core.rpc;
 
     import com.google.protobuf.*;
+    import com.googlecode.protobuf.pro.duplex.*;
     import com.googlecode.protobuf.pro.duplex.client.DuplexTcpClientPipelineFactory;
     import com.googlecode.protobuf.pro.duplex.client.RpcClientConnectionWatchdog;
     import com.googlecode.protobuf.pro.duplex.execute.ThreadPoolCallExecutor;
@@ -41,7 +42,7 @@ public class ILTalkClient implements RpcClientChannel {
      * @param serverInfo
      * @param dbServerInfo
      */
-    public ILTalkClient(PeerInfo clientInfo, PeerInfo serverInfo, PeerInfo dbClientInfo , PeerInfo dbServerInfo ) {
+    public ILTalkClient( PeerInfo clientInfo, PeerInfo serverInfo, PeerInfo dbClientInfo , PeerInfo dbServerInfo ) {
         delegate = createRpcClient(clientInfo,serverInfo);
         dbClient = createRpcClient(dbClientInfo, dbServerInfo);
 
@@ -63,7 +64,7 @@ public class ILTalkClient implements RpcClientChannel {
         // setup a RPC event listener - it just logs what happens
         RpcConnectionEventNotifier rpcEventNotifier = new RpcConnectionEventNotifier();
         final RpcConnectionEventListener listener = new RpcConnectionEventListener() {
-            private RpcCallback<? extends Message> serverCallback
+            private final RpcCallback<? extends Message> serverCallback
                     = (RpcCallback<Message>) parameter -> {
                 log.info("dummy server callback " + parameter);
             };
@@ -364,15 +365,4 @@ public class ILTalkClient implements RpcClientChannel {
     public PeerInfo getPeerInfo() {
         return delegate.getPeerInfo();
     }
-
-//    public IPeerWrapper getPeer1() {
-//        return (IPeerWrapper) delegate;
-//    }
-//
-//    public IPeerWrapper getPeer2() {
-//        return null;
-//    }
 }
-
-///===================
-

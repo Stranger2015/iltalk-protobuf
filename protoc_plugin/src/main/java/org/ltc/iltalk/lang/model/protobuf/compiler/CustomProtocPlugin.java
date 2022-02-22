@@ -25,7 +25,7 @@ public static final String ID = "compiler.id";
         CustomProtocPlugin plugin = new CustomProtocPlugin();
         System.out.printf("\nCustom proto compiler started ID=%s\n","n/a");
 
-        requestStream.
+
 
     }
 

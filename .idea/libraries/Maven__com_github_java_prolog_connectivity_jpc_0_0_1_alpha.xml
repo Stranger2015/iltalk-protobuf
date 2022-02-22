@@ -1,13 +1,7 @@
 <component name="libraryTable">
   <library name="Maven: com.github.java-prolog-connectivity:jpc:0.0.1-alpha">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/github/java-prolog-connectivity/jpc/0.0.1-alpha/jpc-0.0.1-alpha.jar!/" />
-    </CLASSES>
-    <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/github/java-prolog-connectivity/jpc/0.0.1-alpha/jpc-0.0.1-alpha-javadoc.jar!/" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/github/java-prolog-connectivity/jpc/0.0.1-alpha/jpc-0.0.1-alpha-sources.jar!/" />
-    </SOURCES>
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>

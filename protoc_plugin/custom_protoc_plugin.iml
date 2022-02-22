@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -17,14 +17,22 @@
     <orderEntry type="library" exported="" name="Gradle: io.grpc:grpc-stub:1.0.0-pre2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: io.grpc:grpc-core:1.0.0-pre2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: io.grpc:grpc-protobuf-lite:1.0.0-pre2" level="project" />
-    <orderEntry type="library" name="src" level="project" />
-    <orderEntry type="library" name="diff" level="project" />
+    <orderEntry type="library" exported="" name="diff" level="project" />
     <orderEntry type="library" exported="" name="interprolog" level="project" />
-    <orderEntry type="library" exported="" name="prologcafe" level="project" />
     <orderEntry type="library" exported="" name="Maven: com.github.marschall:memoryfilesystem:1.0.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: io.netty:netty-all:4.1.11.Final" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.declarativa.interprolog:interprolog:3.7" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.googlecode.protobuf-rpc-pro:protobuf-rpc-pro-duplex:3.3.4" level="project" />
+    <orderEntry type="library" name="Gradle: javax.annotation:javax.annotation-api:1.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:3.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.marschall:memoryfilesystem:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.11.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.declarativa.interprolog:interprolog:3.7" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.protobuf-rpc-pro:protobuf-rpc-pro-duplex:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.0.33.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.0.33.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.0.33.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.0.33.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.0.33.Final" level="project" />
     <orderEntry type="library" exported="" name="Maven: com.github.os72:protobuf-dynamic:0.9.4" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.xolstice.maven.plugins:protobuf-maven-plugin:0.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:3.0" level="project" />
@@ -54,7 +62,7 @@
     <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact:3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-compat:3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-provider-api:1.0-beta-6" level="project" />
-    <orderEntry type="library" exported="" name="Maven: com.github.java-prolog-connectivity:jpc:0.0.1-alpha" level="project" />
+    <orderEntry type="library" name="Maven: com.github.java-prolog-connectivity:jpc:0.0.1-alpha" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.10" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.19.0-GA" level="project" />
@@ -64,9 +72,7 @@
     <orderEntry type="library" name="Maven: com.github.jcategory:jcategory:0.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.typeutils:typeutils:0.0.1" level="project" />
     <orderEntry type="library" name="Maven: net.jodah:typetools:0.4.8" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.8.0-beta2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.2" level="project" />
-    <orderEntry type="library" name="Gradle: javax.annotation:javax.annotation-api:1.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:3.5.1" level="project" />
   </component>
 </module>

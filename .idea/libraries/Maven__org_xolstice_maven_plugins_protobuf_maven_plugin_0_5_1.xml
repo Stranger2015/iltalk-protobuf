@@ -3,11 +3,7 @@
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/xolstice/maven/plugins/protobuf-maven-plugin/0.5.1/protobuf-maven-plugin-0.5.1.jar!/" />
     </CLASSES>
-    <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/xolstice/maven/plugins/protobuf-maven-plugin/0.5.1/protobuf-maven-plugin-0.5.1-javadoc.jar!/" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/xolstice/maven/plugins/protobuf-maven-plugin/0.5.1/protobuf-maven-plugin-0.5.1-sources.jar!/" />
-    </SOURCES>
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>

@@ -15,19 +15,15 @@
       <entry name="!*.mpsr" />
       <entry name="!*.model" />
     </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="custom_protoc_plugin" />
-      </profile>
-    </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="custom_protoc_plugin" target="8" />
       <module name="iltalk-protobuf_main" target="1.8" />
       <module name="iltalk-protobuf_test" target="1.8" />
       <module name="iltalk-protobuf_test~1" target="1.8" />
+      <module name="main.iltalk-protobuf" target="1.8" />
+      <module name="main.iltalk-protobuf.main" target="1.8" />
+      <module name="main.iltalk-protobuf.main~1" target="1.8" />
+      <module name="main.iltalk-protobuf.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

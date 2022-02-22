@@ -1,11 +1,11 @@
 package org.ltc.iltalk.core.rpc;
 
 import com.google.protobuf.RpcCallback;
+import com.googlecode.protobuf.pro.duplex.PeerInfo;
 
 import java.util.Properties;
 
 import static org.ltc.iltalk.core.rpc.ILTalkRpcController.State.CLIENT;
-
 
 /**
  *
@@ -70,7 +70,8 @@ public class ILTalkClientSideController extends ILTalkRpcController {
 //        channel = new RpcClientChannel() {
 //        }
 //
-       rpcClient = new ILTalkClient(clientInfo1, serverInfo1, dbClientInfo, dbServerInfo);
+//        PeerInfo clientInfo1;
+        rpcClient = new ILTalkClient(clientInfo1, serverInfo1, dbClientInfo, dbServerInfo);
 //        dbRpcClient = new ILTalkClient(clientInfo2, serverInfo2, dbClientInfo, dbServerInfo);
 
 //        client1.activate(clientInfo1, serverInfo1, dbServerInfo, dbClientInfo, true);

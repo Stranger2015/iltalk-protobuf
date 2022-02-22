@@ -6,7 +6,7 @@ import javax.lang.model.element.Name;
 public class LanguageModel /*extends SubprocessEngine*/ implements ILanguageModel {
 
     protected int id;
-    public org.ltc.iltalk.core.util.IltName name;
+    public String name;
 
     public LanguageModel(String name) {
 
@@ -27,7 +27,7 @@ public class LanguageModel /*extends SubprocessEngine*/ implements ILanguageMode
      * @return
      */
     @Override
-    public Name getName() {
+    public String getName() {
         return name;
     }
 
@@ -36,7 +36,7 @@ public class LanguageModel /*extends SubprocessEngine*/ implements ILanguageMode
      * @return
      */
     @Override
-    public Name setName(Name name) {
+    public String setName(String name) {
         return this.name = name;
     }
 

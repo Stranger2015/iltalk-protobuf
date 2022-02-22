@@ -5,6 +5,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.RpcCallback;
+import com.googlecode.protobuf.pro.duplex.*;
 import com.googlecode.protobuf.pro.duplex.execute.RpcServerCallExecutor;
 import com.googlecode.protobuf.pro.duplex.execute.RpcServerExecutorCallback;
 import com.googlecode.protobuf.pro.duplex.execute.ThreadPoolCallExecutor;
@@ -13,6 +14,7 @@ import com.googlecode.protobuf.pro.duplex.logging.CategoryPerServiceLogger;
 import com.googlecode.protobuf.pro.duplex.server.DuplexTcpServerPipelineFactory;
 import com.googlecode.protobuf.pro.duplex.util.RenamingThreadFactoryProxy;
 import com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol;
+import com.googlecode.protobuf.pro.duplex.wire.DuplexProtocol.OobMessage;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -26,20 +28,33 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 
-public class ILTalkServer implements RpcServerExecutorCallback {
+public
+class ILTalkServer implements RpcServerExecutorCallback {
 
     protected Logger log = SingletonLogger.getLogger(getClass());
 
     RpcServer rpcServer;
 
     DuplexTcpServerPipelineFactory serverFactory;
+    private RpcServer delegate;
 
 
-    public ILTalkServer(PeerInfo serverInfo, PeerInfo clientInfo) {
+    /**
+     * @param serverInfo
+     * @param clientInfo
+     */
+    public
+    ILTalkServer ( PeerInfo serverInfo, PeerInfo clientInfo ) {
         rpcServer = createRpcServer(serverInfo, clientInfo);
     }
 
-    private RpcServer createRpcServer(PeerInfo serverInfo, PeerInfo clientInfo) {
+    /**
+     * @param serverInfo
+     * @param clientInfo
+     * @return
+     */
+    private
+    RpcServer createRpcServer ( PeerInfo serverInfo, PeerInfo clientInfo ) {
         // PeerInfo serverInfo = new PeerInfo(hostname, port);
         // RPC payloads are uncompressed when logged - so reduce logging
 
@@ -53,34 +68,36 @@ public class ILTalkServer implements RpcServerExecutorCallback {
         serverFactory.setRpcServerCallExecutor(rpcExecutor);
         serverFactory.setLogger(logger);
 
-        final RpcCallback<DuplexProtocol.OobMessage> clientOobMessageCallback =
+        final RpcCallback <OobMessage> clientOobMessageCallback =
                 parameter -> log.info("Received " + parameter);
         // setup a RPC event listener - it just logs what happens
         RpcConnectionEventNotifier rpcEventNotifier = new RpcConnectionEventNotifier();
         RpcConnectionEventListener listener = new RpcConnectionEventListener() {
             @Override
-            public void connectionReestablished(RpcClientChannel clientChannel) {
+            public
+            void connectionReestablished ( RpcClientChannel clientChannel ) {
                 log.info("connectionReestablished " + clientChannel);
-
-                clientChannel.setOobMessageCallback(DuplexProtocol.OobMessage.getDefaultInstance(), clientOobMessageCallback);
+                clientChannel.setOobMessageCallback(OobMessage.getDefaultInstance(), clientOobMessageCallback);
             }
 
             @Override
-            public void connectionOpened(RpcClientChannel clientChannel) {
+            public
+            void connectionOpened ( RpcClientChannel clientChannel ) {
                 log.info("connectionOpened " + clientChannel);
-
-                clientChannel.setOobMessageCallback(DuplexProtocol.OobMessage.getDefaultInstance(), clientOobMessageCallback);
+                clientChannel.setOobMessageCallback(OobMessage.getDefaultInstance(), clientOobMessageCallback);
             }
 
             @Override
-            public void connectionLost(RpcClientChannel clientChannel) {
+            public
+            void connectionLost ( RpcClientChannel clientChannel ) {
                 log.info("connectionLost " + clientChannel);
             }
 
             @Override
-            public void connectionChanged(RpcClientChannel clientChannel) {
+            public
+            void connectionChanged ( RpcClientChannel clientChannel ) {
                 log.info("connectionChanged " + clientChannel);
-                clientChannel.setOobMessageCallback(DuplexProtocol.OobMessage.getDefaultInstance(), clientOobMessageCallback);
+                clientChannel.setOobMessageCallback(OobMessage.getDefaultInstance(), clientOobMessageCallback);
             }
         };
         rpcEventNotifier.setEventListener(listener);
@@ -112,14 +129,13 @@ public class ILTalkServer implements RpcServerExecutorCallback {
         log.info("Serving " + serverBootstrap);
 
         try {
-            return mainLoop(serverFactory);
+            mainLoop(serverFactory);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Error(e);
         }
+        return null;
     }
-
-}
 
     /**
      * Called once after the RPC server call finishes ( or fails ).
@@ -132,7 +148,8 @@ public class ILTalkServer implements RpcServerExecutorCallback {
      * @param message       Message of RPC response, or null if controller indicates error.
      */
     @Override
-    public void onFinish(int correlationId, Message message) {
+    public
+    void onFinish ( int correlationId, Message message ) {
         delegate.onFinish(correlationId, message);
     }
 
@@ -141,15 +158,16 @@ public class ILTalkServer implements RpcServerExecutorCallback {
      *
      * @param serverFactory
      */
-    public int mainLoop(DuplexTcpServerPipelineFactory serverFactory) throws InvalidProtocolBufferException {
+    public
+    void mainLoop ( DuplexTcpServerPipelineFactory serverFactory ) throws InvalidProtocolBufferException {
 
-        List<RpcClientChannel> clients = serverFactory.getRpcClientRegistry().getAllClients();
+        List <RpcClientChannel> clients = serverFactory.getRpcClientRegistry().getAllClients();
         for (RpcClientChannel client : clients) {
             ByteString msgS = ByteString.copyFromUtf8(String.format("Server %s OK@%d",
                     serverFactory.getServerInfo().toString(),
                     System.currentTimeMillis()));
 
-            DuplexProtocol.OobMessage serverMsg = DuplexProtocol.OobMessage.parseFrom(msgS);
+            OobMessage serverMsg = OobMessage.parseFrom(msgS);
 
             ChannelFuture oobSend = client.sendOobMessage(serverMsg);
             if (!oobSend.isDone()) {
@@ -157,11 +175,12 @@ public class ILTalkServer implements RpcServerExecutorCallback {
                 oobSend.syncUninterruptibly();
             }
             if (!oobSend.isSuccess()) {
-                log.warn("org.ltc.iltalk.com.googlecode.protobuf.pro.duplex.wire.OobMessage send failed.", oobSend.cause());
+                log.warn(
+                        /*org.ltc.iltalk.com.googlecode.protobuf.pro.duplex.wire.*/
+                        "OobMessage send failed.", oobSend.cause());
             }
         }
-        //
-        return 0;
+
     }
 
 
@@ -169,7 +188,8 @@ public class ILTalkServer implements RpcServerExecutorCallback {
      * @return
      */
 //    @Override
-    public PeerInfo getPeerInfo() {
+    public
+    PeerInfo getPeerInfo () {
         return null;
     }
 
