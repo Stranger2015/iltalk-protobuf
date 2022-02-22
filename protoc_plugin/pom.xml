@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Generated from archetype; please customize.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>protoc</groupId>
+    <artifactId>protoc_plugin</artifactId>
+    <name>protoc_plugin project</name>
+    <version>0.2.1-alpha</version>
+    <packaging>maven-plugin</packaging>
+    <developers>
+        <developer>
+            <id>Stranger2015</id>
+            <name>Anton Danilov</name>
+            <email>anton.danilov@gmail.com</email>
+            <timezone>GMT +3</timezone>
+        </developer>
+    </developers>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.marschall</groupId>
+            <artifactId>memoryfilesystem</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.11.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.declarativa.interprolog</groupId>
+            <artifactId>interprolog</artifactId>
+            <version>3.7</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.codehaus.gmaven</groupId>-->
+            <!--<artifactId>gmaven-mojo</artifactId>-->
+            <!--<version>1.5</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.protobuf-rpc-pro</groupId>
+            <artifactId>protobuf-rpc-pro-duplex</artifactId>
+            <version>3.3.4</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.os72</groupId>
+            <artifactId>protobuf-dynamic</artifactId>
+            <version>0.9.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.5.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.java-prolog-connectivity/jpc -->
+        <dependency>
+            <groupId>com.github.java-prolog-connectivity</groupId>
+            <artifactId>jpc</artifactId>
+            <version>0.0.1-alpha</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <!--<extensions>-->
+            <!--<extension>-->
+                <!--<groupId>kr.motd.maven</groupId>-->
+                <!--<artifactId>os-maven-plugin</artifactId>-->
+                <!--<version>1.6.0</version>-->
+            <!--</extension>-->
+        <!--</extensions>-->
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                            <!--<goal>compile-custom</goal>-->
+                            <goal>test-compile</goal>
+                            <!--<goal>test-compile-custom</goal>-->
+                        </goals>
+                        <configuration>
+                            <!--<protocArtifact>com.google.protobuf:protoc:3.5.1:exe:${os.detected.classifier}</protocArtifact>-->
+                            <protocArtifact>org.ltc.iltalk.protobuf.compiler:JavaLogtalkProtoc:0.1.1-alpha:java</protocArtifact>
+                            <protocPlugins>
+                                <protocPlugin>
+                                    <id>custom-protoc-plugin</id>
+                                    <groupId>com.github.stranger2015</groupId>
+                                    <artifactId>custom-protoc-plugin</artifactId>
+                                    <version>0.2.1-alpha</version>
+                                    <mainClass>org.ltc.iltalk.protobuf.compiler.ProtocPlugin</mainClass>
+                                    <model-property/>
+                                </protocPlugin>
+                            </protocPlugins>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
